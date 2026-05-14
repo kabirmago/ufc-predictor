@@ -25,6 +25,13 @@ const DATA = loadData();
 
 function sigmoid(x) { return 1 / (1 + Math.exp(-x)); }
 
+// Compress probabilities toward 50% to reduce overconfidence from career averages.
+// A logistic surrogate on career stats pushes extreme matchups too far.
+// This shrinks by 15% toward 0.5 — so 93% -> 84%, 75% -> 71%, 58% -> 57%.
+function dampCalibration(p, factor = 0.15) {
+  return 0.5 + (p - 0.5) * (1 - factor);
+}
+
 function getStats(name) {
   return FIGHTERS[name] || { slpm: 0, str_acc: 0, sapm: 0, str_def: 0, td_avg: 0, td_acc: 0, td_def: 0, sub_avg: 0 };
 }
@@ -50,10 +57,10 @@ function runModel(feats) {
   for (const f of MODEL.feature_order) {
     logit += (MODEL.coefficients[f] || 0) * (feats[f] || 0);
   }
-  return sigmoid(logit);
+  return dampCalibration(sigmoid(logit));
 }
 
-// Landing page at root — registered BEFORE static middleware so it wins
+// Landing page at root
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../landing.html'));
 });
@@ -63,7 +70,6 @@ app.get('/app', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
 });
 
-// API routes
 app.get('/api/fighters', (req, res) => {
   const q = (req.query.q || '').toLowerCase();
   const matches = q.length < 2
@@ -109,7 +115,7 @@ app.post('/api/predict', (req, res) => {
   });
 });
 
-// Static files for /app route (React build) — AFTER route handlers
+// Static files — AFTER route handlers
 app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
 // Fallback
