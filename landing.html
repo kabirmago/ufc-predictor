@@ -18,10 +18,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:18px 48px;display:fl
 .nav-links{display:flex;gap:28px;font-size:13px;color:var(--muted)}
 .nav-links a:hover{color:var(--fg)}
 .nav-cta{background:var(--accent);color:#000;padding:7px 18px;border-radius:7px;font-size:12px;font-weight:700}
-
-/* HERO */
 .hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;gap:0;align-items:stretch;padding-top:64px}
-.hero-left{padding:80px 48px 80px 48px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
+.hero-left{padding:80px 48px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
 .hero-left::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 100% 80% at 0% 50%,rgba(232,255,90,0.04) 0%,transparent 70%);pointer-events:none}
 .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);background-size:48px 48px;pointer-events:none}
 .eyebrow{font-size:10px;letter-spacing:0.2em;color:var(--accent);margin-bottom:18px;display:flex;align-items:center;gap:8px}
@@ -33,11 +31,8 @@ h1 em{font-style:normal;color:var(--accent)}
 .stat-val{font-size:2rem;font-weight:700;letter-spacing:-0.03em}
 .stat-val em{font-style:normal;color:var(--accent)}
 .stat-lbl{font-size:11px;color:var(--muted);letter-spacing:0.05em;margin-top:2px}
-
-/* PREDICTOR PANEL */
-.hero-right{background:var(--surface);border-left:1px solid var(--border);padding:48px;display:flex;flex-direction:column;justify-content:center;gap:24px}
-.panel-title{font-size:13px;color:var(--muted);letter-spacing:0.12em;margin-bottom:4px}
-.fighter-inputs{display:flex;flex-direction:column;gap:14px}
+.hero-right{background:var(--surface);border-left:1px solid var(--border);padding:48px;display:flex;flex-direction:column;justify-content:center;gap:20px;overflow-y:auto}
+.panel-title{font-size:11px;color:var(--muted);letter-spacing:0.14em;margin-bottom:4px}
 .input-group{display:flex;flex-direction:column;gap:6px;position:relative}
 .input-label{font-size:11px;letter-spacing:0.1em;color:var(--muted);display:flex;align-items:center;gap:6px}
 .badge{padding:1px 7px;border-radius:20px;font-size:10px;font-weight:700}
@@ -45,71 +40,67 @@ h1 em{font-style:normal;color:var(--accent)}
 .badge-red{background:rgba(216,90,48,0.15);color:var(--red)}
 .fighter-input{width:100%;padding:13px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--fg);font-size:14px;font-family:inherit;outline:none;transition:border-color 0.2s}
 .fighter-input:focus{border-color:var(--accent)}
-.dropdown{position:absolute;top:100%;left:0;right:0;margin-top:4px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;z-index:100;overflow:hidden;display:none}
+.dropdown{position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--surface2);border:1px solid var(--border);border-radius:10px;z-index:300;overflow:hidden;display:none;max-height:220px;overflow-y:auto}
 .dropdown.open{display:block}
-.dropdown-item{padding:10px 16px;font-size:13px;cursor:pointer;border-bottom:1px solid var(--border);transition:background 0.1s}
-.dropdown-item:last-child{border-bottom:none}
-.dropdown-item:hover{background:var(--surface)}
+.dd-item{padding:10px 16px;font-size:13px;cursor:pointer;border-bottom:1px solid var(--border)}
+.dd-item:last-child{border-bottom:none}
+.dd-item:hover,.dd-item:focus{background:var(--surface);outline:none}
 .vs-row{display:flex;align-items:center;gap:12px}
 .vs-row::before,.vs-row::after{content:'';flex:1;height:1px;background:var(--border)}
 .vs-text{font-size:12px;color:var(--muted);font-weight:600}
 .predict-btn{width:100%;padding:15px;background:var(--accent);color:#000;border:none;border-radius:10px;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;transition:opacity 0.2s;letter-spacing:0.01em}
 .predict-btn:hover{opacity:0.88}
 .predict-btn:disabled{opacity:0.5;cursor:not-allowed}
-
-/* RESULT */
 .result-box{display:none;flex-direction:column;gap:14px}
 .result-box.show{display:flex}
-.result-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:22px}
+.result-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:20px}
 .winner-label{font-size:10px;color:var(--muted);letter-spacing:0.12em;margin-bottom:4px}
-.winner-name{font-size:1.7rem;font-weight:700;letter-spacing:-0.02em}
+.winner-name{font-size:1.6rem;font-weight:700;letter-spacing:-0.02em}
 .winner-name.blue{color:var(--blue)}
 .winner-name.red{color:var(--red)}
 .conf{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;margin-left:10px;vertical-align:middle}
 .conf-high{background:rgba(74,222,128,0.1);color:var(--green);border:1px solid rgba(74,222,128,0.25)}
 .conf-med{background:rgba(232,255,90,0.1);color:var(--accent);border:1px solid rgba(232,255,90,0.25)}
 .conf-low{background:rgba(255,255,255,0.05);color:var(--muted);border:1px solid var(--border)}
-.prob-wrap{margin:16px 0 0}
-.prob-names{display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px}
+.prob-wrap{margin:14px 0 0}
+.prob-names{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px}
 .prob-names span:first-child{color:var(--blue);font-weight:600}
 .prob-names span:last-child{color:var(--red);font-weight:600}
 .prob-names span:nth-child(2){color:var(--muted);font-size:10px}
-.prob-bar{height:20px;border-radius:10px;overflow:hidden;display:flex;background:var(--surface)}
+.prob-bar{height:18px;border-radius:9px;overflow:hidden;display:flex;background:var(--surface)}
 .prob-f1{background:var(--blue);transition:width 0.9s cubic-bezier(0.22,1,0.36,1)}
 .prob-f2{background:var(--red);transition:width 0.9s cubic-bezier(0.22,1,0.36,1)}
-.prob-pcts{display:flex;justify-content:space-between;margin-top:5px;font-size:12px;font-weight:600}
+.prob-pcts{display:flex;justify-content:space-between;margin-top:4px;font-size:12px;font-weight:600}
 .prob-pcts span:first-child{color:var(--blue)}
 .prob-pcts span:last-child{color:var(--red)}
-.shap-title{font-size:10px;color:var(--muted);letter-spacing:0.12em;margin-bottom:12px}
-.shap-item{margin-bottom:9px}
+.shap-title{font-size:10px;color:var(--muted);letter-spacing:0.12em;margin-bottom:10px}
+.shap-item{margin-bottom:8px}
 .shap-row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px}
 .shap-name{color:var(--fg)}
 .shap-val{font-family:'Fira Code',monospace;font-size:11px;color:var(--muted)}
 .shap-bar-bg{height:4px;background:var(--surface);border-radius:2px;overflow:hidden}
 .shap-bar-fill{height:100%;border-radius:2px;transition:width 0.6s ease}
-.shap-legend{display:flex;gap:16px;margin-top:12px;font-size:10px;color:var(--muted)}
-.stats-title{font-size:10px;color:var(--muted);letter-spacing:0.12em;margin-bottom:12px}
-.stat-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:12px}
-.stat-lbl-row{color:var(--muted);flex:1;text-align:center}
-.stat-f1{color:var(--blue);font-weight:600;font-family:'Fira Code',monospace;min-width:60px}
-.stat-f2{color:var(--red);font-weight:600;font-family:'Fira Code',monospace;min-width:60px;text-align:right}
+.shap-legend{display:flex;gap:16px;margin-top:10px;font-size:10px;color:var(--muted)}
+.stats-title{font-size:10px;color:var(--muted);letter-spacing:0.12em;margin-bottom:10px}
+.stat-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:12px}
+.stat-lbl-c{color:var(--muted);flex:1;text-align:center}
+.stat-f1v{color:var(--blue);font-weight:600;font-family:'Fira Code',monospace;min-width:56px}
+.stat-f2v{color:var(--red);font-weight:600;font-family:'Fira Code',monospace;min-width:56px;text-align:right}
 .error-msg{color:var(--red);font-size:13px;line-height:1.6;padding:4px 0}
-
-/* METHODOLOGY + VALIDATION strips */
 .strip{padding:72px 48px;border-top:1px solid var(--border)}
 .strip-inner{max-width:1100px;margin:0 auto}
 .strip-label{font-size:10px;letter-spacing:0.2em;color:var(--accent);margin-bottom:14px}
 .strip-title{font-size:clamp(1.8rem,3vw,2.8rem);font-weight:700;letter-spacing:-0.02em;margin-bottom:14px}
-.strip-sub{font-size:15px;color:var(--muted);max-width:520px;line-height:1.75;margin-bottom:48px}
+.strip-sub{font-size:15px;color:var(--muted);max-width:520px;line-height:1.75;margin-bottom:40px}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
 .method-steps{display:flex;flex-direction:column}
-.method-step{display:flex;gap:20px;padding:22px 0;border-bottom:1px solid var(--border)}
+.method-step{display:flex;gap:20px;padding:20px 0;border-bottom:1px solid var(--border)}
 .method-step:last-child{border-bottom:none}
 .step-num{font-size:10px;font-family:'Fira Code',monospace;color:var(--accent);min-width:24px;padding-top:2px}
-.step-title{font-size:14px;font-weight:600;margin-bottom:5px}
+.step-title{font-size:14px;font-weight:600;margin-bottom:4px}
 .step-desc{font-size:13px;color:var(--muted);line-height:1.7}
-.shap-chart-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:28px}
-.shap-chart-label{font-size:10px;color:var(--muted);letter-spacing:0.12em;margin-bottom:20px}
+.shap-chart-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:26px}
+.shap-chart-label{font-size:10px;color:var(--muted);letter-spacing:0.12em;margin-bottom:18px}
 .shap-chart-rows{display:flex;flex-direction:column;gap:10px}
 .shap-chart-row{display:grid;grid-template-columns:130px 1fr 56px;align-items:center;gap:10px}
 .sc-label{font-size:11px;color:var(--muted);text-align:right}
@@ -120,17 +111,15 @@ h1 em{font-style:normal;color:var(--accent)}
 .matchup{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:18px}
 .matchup-fighters{display:flex;align-items:center;gap:10px;margin-bottom:12px}
 .mf{font-size:13px;font-weight:600}
-.mf.blue{color:var(--blue)}
-.mf.red{color:var(--red)}
+.mf.blue{color:var(--blue)}.mf.red{color:var(--red)}
 .mvs{font-size:10px;color:var(--muted);font-weight:600}
 .mbar{height:5px;border-radius:3px;overflow:hidden;background:var(--surface2);display:flex;margin-bottom:8px}
-.mbar-f1{background:var(--blue)}
-.mbar-f2{background:var(--red)}
+.mbar-f1{background:var(--blue)}.mbar-f2{background:var(--red)}
 .mpcts{display:flex;justify-content:space-between;font-size:11px;font-weight:600;font-family:'Fira Code',monospace}
 .moutcome{font-size:11px;color:var(--muted);margin-top:6px}
 .mcheck{color:var(--green)}
-footer{background:var(--surface);border-top:1px solid var(--border);padding:36px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px}
-.footer-sub{font-size:12px;color:var(--muted);margin-top:6px}
+footer{background:var(--surface);border-top:1px solid var(--border);padding:32px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.footer-sub{font-size:12px;color:var(--muted);margin-top:4px}
 .footer-links{display:flex;gap:20px;font-size:12px;color:var(--muted)}
 .footer-links a:hover{color:var(--fg)}
 @media(max-width:900px){
@@ -164,23 +153,20 @@ footer{background:var(--surface);border-top:1px solid var(--border);padding:36px
       <div><div class="stat-val">+<em>12</em>%</div><div class="stat-lbl">OVER BASELINE</div></div>
     </div>
   </div>
-
   <div class="hero-right">
     <div class="panel-title">FIGHT PREDICTOR</div>
-    <div class="fighter-inputs">
-      <div class="input-group">
-        <div class="input-label">Fighter 1 <span class="badge badge-blue">BLUE</span></div>
-        <input class="fighter-input" id="f1" placeholder="Search fighter name..." autocomplete="off" />
-        <div class="dropdown" id="dd1"></div>
-      </div>
-      <div class="vs-row"><span class="vs-text">VS</span></div>
-      <div class="input-group">
-        <div class="input-label">Fighter 2 <span class="badge badge-red">RED</span></div>
-        <input class="fighter-input" id="f2" placeholder="Search fighter name..." autocomplete="off" />
-        <div class="dropdown" id="dd2"></div>
-      </div>
+    <div class="input-group">
+      <div class="input-label">Fighter 1 <span class="badge badge-blue">BLUE</span></div>
+      <input class="fighter-input" id="f1" placeholder="Search fighter name..." autocomplete="off">
+      <div class="dropdown" id="dd1"></div>
     </div>
-    <button class="predict-btn" id="predict-btn" onclick="predict()">Predict winner &rarr;</button>
+    <div class="vs-row"><span class="vs-text">VS</span></div>
+    <div class="input-group">
+      <div class="input-label">Fighter 2 <span class="badge badge-red">RED</span></div>
+      <input class="fighter-input" id="f2" placeholder="Search fighter name..." autocomplete="off">
+      <div class="dropdown" id="dd2"></div>
+    </div>
+    <button class="predict-btn" id="pbtn" onclick="runPredict()">Predict winner &rarr;</button>
     <div id="result" class="result-box"></div>
   </div>
 </section>
@@ -196,7 +182,7 @@ footer{background:var(--surface);border-top:1px solid var(--border);padding:36px
           <div class="method-step"><div class="step-num">01</div><div><div class="step-title">Feature engineering</div><div class="step-desc">12 differentials from career averages &mdash; striking output, accuracy, absorption, defense, takedown stats, submission rate, and composite edges.</div></div></div>
           <div class="method-step"><div class="step-num">02</div><div><div class="step-title">XGBoost + Optuna</div><div class="step-desc">Gradient-boosted trees tuned via 50-trial Bayesian optimization. Each fight appears twice &mdash; once per fighter as F1 &mdash; symmetric balanced dataset.</div></div></div>
           <div class="method-step"><div class="step-num">03</div><div><div class="step-title">SHAP analysis</div><div class="step-desc">TreeExplainer computes per-feature Shapley values. Net strike edge dominates &mdash; 2x the importance of the next feature.</div></div></div>
-          <div class="method-step"><div class="step-num">04</div><div><div class="step-title">JS surrogate</div><div class="step-desc">Logistic regression fit on XGBoost's own predictions achieves 89.3% agreement &mdash; real-time predictions with no backend lag.</div></div></div>
+          <div class="method-step"><div class="step-num">04</div><div><div class="step-title">JS surrogate</div><div class="step-desc">Logistic regression fit on XGBoost predictions achieves 89.3% agreement &mdash; real-time predictions with no backend lag.</div></div></div>
         </div>
       </div>
       <div>
@@ -237,90 +223,85 @@ footer{background:var(--surface);border-top:1px solid var(--border);padding:36px
     <div class="logo"><div class="logo-mark">UFC</div><span style="font-weight:600;font-size:14px">UFC Predictor</span></div>
     <div class="footer-sub">XGBoost &middot; Optuna &middot; SHAP &middot; Express &middot; Railway &middot; Data: ufcstats.com via Kaggle (2015&ndash;2021)</div>
   </div>
-  <div class="footer-links">
-    <a href="https://github.com/kabirmago/ufc-predictor">GitHub &rarr;</a>
-    <a href="https://www.kaggle.com/datasets/asaniczka/ufc-fighters-statistics">Dataset &rarr;</a>
-  </div>
+  <div class="footer-links"><a href="https://github.com/kabirmago/ufc-predictor">GitHub &rarr;</a><a href="https://www.kaggle.com/datasets/asaniczka/ufc-fighters-statistics">Dataset &rarr;</a></div>
 </footer>
 
 <script>
 const FEAT_LABELS={net_strike_edge:'Net strike edge',sub_diff:'Submission threat',slpm_diff:'Strike output',def_ratio:'Defense ratio',td_diff:'Takedown diff',str_acc_diff:'Strike accuracy',td_def_diff:'TD defense',sapm_diff:'Strikes absorbed',net_grapple_edge:'Net grapple edge',str_def_diff:'Strike defense',td_acc_diff:'TD accuracy',style_mismatch:'Style mismatch'};
-let f1Val='',f2Val='';
+let f1Sel='',f2Sel='';
 
-function debounce(fn,ms){let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms)}}
+function debounce(fn,ms){let t;return(...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms);}}
 
-async function search(q,ddId,onSelect){
-  const dd=document.getElementById(ddId);
-  if(q.length<2){dd.innerHTML='';dd.classList.remove('open');return}
-  try{
-    const r=await fetch('/api/fighters?q='+encodeURIComponent(q));
-    const names=await r.json();
-    if(!names.length){dd.innerHTML='';dd.classList.remove('open');return}
-    dd.innerHTML=names.map(n=>`<div class="dropdown-item" onmousedown="event.preventDefault();selectFighter('${n.replace(/'/g,\"\\'\")}',${'"'+ddId+'"'},${typeof onSelect}==='function'?onSelect:null)">${n}</div>`).join('');
-    dd.classList.add('open');
-  }catch(e){console.error(e)}
-}
-
-function selectFighter(name,ddId,cb){
-  const dd=document.getElementById(ddId);
-  dd.classList.remove('open');
-  const inp=document.getElementById(ddId==='dd1'?'f1':'f2');
-  inp.value=name;
-  if(ddId==='dd1')f1Val=name; else f2Val=name;
-}
-
-function setupInput(inputId,ddId){
+function setupInput(inputId,ddId,selVar){
   const inp=document.getElementById(inputId);
-  const debouncedSearch=debounce(q=>search(q,ddId,null),180);
+  const dd=document.getElementById(ddId);
+
+  const doSearch=debounce(async(q)=>{
+    if(q.length<2){dd.innerHTML='';dd.classList.remove('open');return;}
+    try{
+      const r=await fetch('/api/fighters?q='+encodeURIComponent(q));
+      const names=await r.json();
+      dd.innerHTML=names.map(n=>`<div class="dd-item" tabindex="0">${n}</div>`).join('');
+      dd.classList.toggle('open',names.length>0);
+    }catch(e){dd.classList.remove('open');}
+  },180);
+
   inp.addEventListener('input',e=>{
-    if(inputId==='f1')f1Val=''; else f2Val='';
-    debouncedSearch(e.target.value);
+    if(selVar==='f1')f1Sel=''; else f2Sel='';
+    doSearch(e.target.value);
   });
-  inp.addEventListener('blur',()=>{
-    setTimeout(()=>document.getElementById(ddId).classList.remove('open'),150);
-  });
+
   inp.addEventListener('keydown',e=>{
-    const dd=document.getElementById(ddId);
-    const items=dd.querySelectorAll('.dropdown-item');
-    if(e.key==='ArrowDown'&&items.length){e.preventDefault();items[0].focus()}
+    const items=[...dd.querySelectorAll('.dd-item')];
+    if(e.key==='ArrowDown'&&items.length){e.preventDefault();items[0].focus();}
     if(e.key==='Enter'){
-      const first=dd.querySelector('.dropdown-item');
-      if(first){const name=first.textContent;inp.value=name;if(inputId==='f1')f1Val=name;else f2Val=name;dd.classList.remove('open')}
+      if(items.length){pick(items[0].textContent,inputId,ddId,selVar);}
       else if(inputId==='f1')document.getElementById('f2').focus();
     }
   });
-  // allow keyboard nav inside dropdown
-  dd=document.getElementById(ddId);
+
   dd.addEventListener('keydown',e=>{
-    const items=[...dd.querySelectorAll('.dropdown-item')];
+    const items=[...dd.querySelectorAll('.dd-item')];
     const idx=items.indexOf(document.activeElement);
-    if(e.key==='ArrowDown'&&idx<items.length-1){e.preventDefault();items[idx+1].focus()}
-    if(e.key==='ArrowUp'){e.preventDefault();if(idx>0)items[idx-1].focus();else inp.focus()}
-    if(e.key==='Enter'&&idx>=0){const name=items[idx].textContent;inp.value=name;if(inputId==='f1')f1Val=name;else f2Val=name;dd.classList.remove('open')}
+    if(e.key==='ArrowDown'&&idx<items.length-1){e.preventDefault();items[idx+1].focus();}
+    if(e.key==='ArrowUp'){e.preventDefault();if(idx>0)items[idx-1].focus();else inp.focus();}
+    if(e.key==='Enter'&&idx>=0)pick(items[idx].textContent,inputId,ddId,selVar);
   });
-  dd.addEventListener('click',e=>{
-    const item=e.target.closest('.dropdown-item');
-    if(item){const name=item.textContent;inp.value=name;if(inputId==='f1')f1Val=name;else f2Val=name;dd.classList.remove('open')}
+
+  dd.addEventListener('mousedown',e=>{
+    const item=e.target.closest('.dd-item');
+    if(item){e.preventDefault();pick(item.textContent,inputId,ddId,selVar);}
+  });
+
+  document.addEventListener('click',e=>{
+    if(!inp.contains(e.target)&&!dd.contains(e.target))dd.classList.remove('open');
   });
 }
 
-setupInput('f1','dd1');
-setupInput('f2','dd2');
+function pick(name,inputId,ddId,selVar){
+  document.getElementById(inputId).value=name;
+  document.getElementById(ddId).classList.remove('open');
+  if(selVar==='f1')f1Sel=name; else f2Sel=name;
+  if(inputId==='f1')document.getElementById('f2').focus();
+}
 
-async function predict(){
-  const f1=f1Val||document.getElementById('f1').value.trim();
-  const f2=f2Val||document.getElementById('f2').value.trim();
-  if(!f1||!f2){showErr('Enter both fighter names');return}
-  if(f1===f2){showErr('Select two different fighters');return}
-  const btn=document.getElementById('predict-btn');
+setupInput('f1','dd1','f1');
+setupInput('f2','dd2','f2');
+
+async function runPredict(){
+  const f1=f1Sel||document.getElementById('f1').value.trim();
+  const f2=f2Sel||document.getElementById('f2').value.trim();
+  if(!f1||!f2){showErr('Enter both fighter names');return;}
+  if(f1===f2){showErr('Select two different fighters');return;}
+  const btn=document.getElementById('pbtn');
   btn.disabled=true;btn.textContent='Analyzing...';
   try{
     const r=await fetch('/api/predict',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({f1,f2})});
     const d=await r.json();
     if(!r.ok)throw new Error(d.error||'Prediction failed');
     renderResult(d);
-  }catch(e){showErr(e.message)}
-  finally{btn.disabled=false;btn.textContent='Predict winner \u2192'}
+  }catch(e){showErr(e.message);}
+  finally{btn.disabled=false;btn.textContent='Predict winner \u2192';}
 }
 
 function renderResult(d){
@@ -328,7 +309,6 @@ function renderResult(d){
   const pct2=100-pct1;
   const wColor=d.predicted_winner===d.f1_name?'blue':'red';
   const confClass=d.confidence==='high'?'conf-high':d.confidence==='medium'?'conf-med':'conf-low';
-  const confText=d.confidence.toUpperCase()+' CONFIDENCE';
   const shap=(d.shap_breakdown||[]).slice(0,5).map(s=>{
     const pos=s.contrib>0;
     const color=pos?'var(--blue)':'var(--red)';
@@ -337,21 +317,12 @@ function renderResult(d){
     const pct=Math.min(Math.abs(s.contrib)*60,100);
     return`<div class="shap-item"><div class="shap-row"><span class="shap-name">${label}</span><span class="shap-val">${s.contrib>0?'+':''}${s.contrib.toFixed(3)} &middot; ${fn}</span></div><div class="shap-bar-bg"><div class="shap-bar-fill" style="width:${pct}%;background:${color}"></div></div></div>`;
   }).join('');
-  const stats=(d.stats||[]).map(s=>`<div class="stat-row"><span class="stat-f1">${s.f1}${s.unit}</span><span class="stat-lbl-row">${s.label}</span><span class="stat-f2">${s.f2}${s.unit}</span></div>`).join('');
+  const stats=(d.stats||[]).map(s=>`<div class="stat-row"><span class="stat-f1v">${s.f1}${s.unit}</span><span class="stat-lbl-c">${s.label}</span><span class="stat-f2v">${s.f2}${s.unit}</span></div>`).join('');
   const el=document.getElementById('result');
-  el.innerHTML=`
-    <div class="result-card">
-      <div class="winner-label">PREDICTED WINNER</div>
-      <div><span class="winner-name ${wColor}">${d.predicted_winner}</span><span class="conf ${confClass}">${confText}</span></div>
-      <div class="prob-wrap">
-        <div class="prob-names"><span>${d.f1_name.split(' ').slice(-1)[0]}</span><span>win probability</span><span>${d.f2_name.split(' ').slice(-1)[0]}</span></div>
-        <div class="prob-bar"><div class="prob-f1" style="width:${pct1}%"></div><div class="prob-f2" style="width:${pct2}%"></div></div>
-        <div class="prob-pcts"><span>${pct1}%</span><span>${pct2}%</span></div>
-      </div>
-    </div>
-    ${shap?`<div class="result-card"><div class="shap-title">SHAP FEATURE BREAKDOWN</div>${shap}<div class="shap-legend"><span style="color:var(--blue)">&#9632; Favors ${d.f1_name.split(' ').slice(-1)[0]} (F1)</span><span style="color:var(--red)">&#9632; Favors ${d.f2_name.split(' ').slice(-1)[0]} (F2)</span></div></div>`:''}
-    ${stats?`<div class="result-card"><div class="stats-title">STAT COMPARISON</div>${stats}</div>`:''}
-  `;
+  el.innerHTML=
+    `<div class="result-card"><div class="winner-label">PREDICTED WINNER</div><div><span class="winner-name ${wColor}">${d.predicted_winner}</span><span class="conf ${confClass}">${d.confidence.toUpperCase()} CONFIDENCE</span></div><div class="prob-wrap"><div class="prob-names"><span>${d.f1_name.split(' ').slice(-1)[0]}</span><span>win prob</span><span>${d.f2_name.split(' ').slice(-1)[0]}</span></div><div class="prob-bar"><div class="prob-f1" style="width:${pct1}%"></div><div class="prob-f2" style="width:${pct2}%"></div></div><div class="prob-pcts"><span>${pct1}%</span><span>${pct2}%</span></div></div></div>`+
+    (shap?`<div class="result-card"><div class="shap-title">SHAP FEATURE BREAKDOWN</div>${shap}<div class="shap-legend"><span style="color:var(--blue)">&#9632; Favors ${d.f1_name.split(' ').slice(-1)[0]}</span><span style="color:var(--red)">&#9632; Favors ${d.f2_name.split(' ').slice(-1)[0]}</span></div></div>`:'')+
+    (stats?`<div class="result-card"><div class="stats-title">STAT COMPARISON</div>${stats}</div>`:'');
   el.classList.add('show');
 }
 
@@ -361,7 +332,7 @@ function showErr(msg){
   el.classList.add('show');
 }
 
-document.getElementById('f2').addEventListener('keydown',e=>{if(e.key==='Enter')predict()});
+document.getElementById('f2').addEventListener('keydown',e=>{if(e.key==='Enter')runPredict();});
 </script>
 </body>
 </html>
