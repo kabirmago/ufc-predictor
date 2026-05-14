@@ -10,13 +10,16 @@ app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
 let MODEL = null;
 let FIGHTERS = null;
+let FIGHTERS_WITH_DATA = null;
 
 function loadData() {
   const dataPath = path.join(__dirname, '../data/dashboard_v2.json');
   const raw = JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
   MODEL = raw.js_model;
   FIGHTERS = raw.fighter_stats;
-  console.log(`Loaded ${Object.keys(FIGHTERS).length} fighters`);
+  // Only expose fighters with real slpm data in autocomplete
+  FIGHTERS_WITH_DATA = Object.keys(FIGHTERS).filter(name => FIGHTERS[name].slpm > 0);
+  console.log(`Loaded ${Object.keys(FIGHTERS).length} fighters (${FIGHTERS_WITH_DATA.length} with real data)`);
   return raw;
 }
 
@@ -54,10 +57,10 @@ function runModel(feats) {
 
 app.get('/api/fighters', (req, res) => {
   const q = (req.query.q || '').toLowerCase();
-  const names = Object.keys(FIGHTERS);
+  // Only search fighters with real slpm data
   const matches = q.length < 2
-    ? names.slice(0, 20)
-    : names.filter(n => n.toLowerCase().includes(q)).slice(0, 12);
+    ? FIGHTERS_WITH_DATA.slice(0, 20)
+    : FIGHTERS_WITH_DATA.filter(n => n.toLowerCase().includes(q)).slice(0, 12);
   res.json(matches);
 });
 
