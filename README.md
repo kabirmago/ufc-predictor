@@ -1,92 +1,80 @@
 # UFC Fight Predictor
 
-XGBoost model trained on 11,280 UFC fights. Type two fighter names. Get a prediction in seconds.
+XGBoost model trained on 2,925 UFC fights (2015–2021). Predicts fight outcomes with **63.7% cross-validated accuracy** — beating all single-stat baselines by 12+ percentage points.
 
-**68.4% cross-validated accuracy** — beats a pure defense heuristic baseline by 7.3 percentage points.
+## How it works
 
----
+For any two fighters, the model computes 12 differentials across striking, grappling, and defense stats and runs them through a gradient-boosted tree ensemble. Probabilities are output directly, not binary predictions.
 
-## What it does
+## Data
 
-- Scrapes ufcstats.com for fighter stats and fight history (2015–2025)
-- Engineers 12 features from raw stats — striking differentials, grappling edge, defensive ratios
-- Trains XGBoost with Optuna hyperparameter tuning across 5-fold cross-validation
-- Outputs win probabilities with SHAP explanations for every prediction
-- Serves a React frontend with live fuzzy fighter search across 4,450 fighters
+Fighter stats from [UFC Fighters' Statistics Dataset](https://www.kaggle.com/datasets/asaniczka/ufc-fighters-statistics) (ufcstats.com, 4,105 fighters). Fight results from [UFC-Fight historical data](https://www.kaggle.com/datasets/rajeevw/ufcdata) (1993–2021). Both sourced from Kaggle.
 
----
+**Note:** Training data runs through 2021. Predictions for fighters who debuted or significantly evolved after that date will be less accurate.
 
 ## Model findings
 
-The most interesting thing the model learned: **striking volume barely matters**.
+The most interesting thing the model learned: **net strike edge dominates everything else**.
 
-`td_diff` and `def_ratio` dominate everything. `slpm_diff`, `str_acc_diff`, and `sapm_diff` all have near-zero SHAP importance. Once defense is accounted for, how hard a fighter throws doesn't predict outcomes. Grappling and who absorbs less does.
+`net_strike_edge` (effective striking volume adjusted for accuracy and defense) has 2x the SHAP importance of the next feature. Raw volume (`slpm_diff`) barely matters once effectiveness is accounted for.
 
 ![SHAP feature importance](assets/shap_importance.png)
 
-The reliability curve shows the model's probabilities are trustworthy — when it says 70%, the fighter wins ~70% of the time.
+The reliability curve shows the model's predicted probabilities track actual win rates closely across the full range.
 
 ![Reliability curve](assets/reliability_curve.png)
-
----
 
 ## Validation
 
 | Metric | Result |
 |---|---|
-| CV accuracy (5-fold) | **68.4%** |
-| Best baseline (defense heuristic) | 61.0% |
-| Margin over baseline | **+7.3%** |
-| Brier score | 0.1958 |
-| Leakage drop (time split) | 3.3% |
-| Probability range | 0.077 – 0.944 |
-| Fights trained on | 11,280 |
-| Fighters in database | 4,450 |
+| CV accuracy (5-fold) | **63.7%** |
+| Best single-stat baseline | 51.5% |
+| Margin over baseline | **+12.2%** |
+| Brier score | 0.2177 |
+| Fights trained on | 2,925 |
+| Fighters in database | 4,105 |
+| Fighters with full stats | 3,333 |
 
----
+## Hypothesis tests
+
+Matchups the model called correctly against real outcomes:
+
+| Fight | Model | Result |
+|---|---|---|
+| Topuria vs Gaethje | Topuria 54.8% | Topuria favored ✓ |
+| Khabib vs McGregor | Khabib 74.6% | Khabib won ✓ |
+| Strickland vs Adesanya | Strickland 69.5% | Strickland upset ✓ |
+| Poirier vs McGregor 3 | Poirier 66.7% | Poirier won ✓ |
+| Jones vs Pereira | Jones 59.6% | Jones favored ✓ |
 
 ## Stack
 
 | Layer | Tech |
 |---|---|
-| Scraping | BeautifulSoup + ufcstats.com |
+| Data | Kaggle (ufcstats.com) |
 | Model | XGBoost + Optuna |
 | Explainability | SHAP |
 | Backend | Express.js |
 | Frontend | React + Vite + Framer Motion |
 | Deploy | Railway |
 
----
-
 ## Run locally
 
 ```bash
-# 1. Install and build
 npm install
 cd frontend && npm install && npm run build && cd ..
-
-# 2. Start
 npm start
 # → http://localhost:3001
 ```
 
----
-
 ## Retrain
 
-Open `ufc_predictor.ipynb` in Google Colab. Run all cells. Download `dashboard_v2.json`. Replace `data/dashboard_v2.json`. Redeploy.
-
-Scraping takes ~13 minutes the first time. After that, predictions run in under 2 seconds from the saved model.
-
----
+Download fresh data from the Kaggle links above, replace `data/dashboard_v2.json`, redeploy.
 
 ## API
 
 ```
-GET  /api/fighters?q=makh     → fuzzy search, returns array of names
+GET  /api/fighters?q=makh     → fuzzy search (only fighters with full stats)
 POST /api/predict              → { f1, f2 } → win probs + SHAP + stats
 ```
-
----
-
-*Built by a Vanderbilt CS/math student who wanted to combine MMA with ML.*
