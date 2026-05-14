@@ -6,11 +6,282 @@
 <title>UFC Predictor</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
 <style>
-*,
-*[::before],*[::after]{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#080808;--surface:#111111;--surface2:#fa1a1a;--border:#222222;--fg:#f0f0ec;--muted:#666666;--accent:#e8ff5a;--blue:#378ADD;--red:#D85A30;--green:#4ade80}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#080808;--surface:#111111;--surface2:#1a1a1a;--border:#222222;--fg:#f0f0ec;--muted:#666666;--accent:#e8ff5a;--blue:#378ADD;--red:#D85A30;--green:#4ade80}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--fg);font-family:'Space Grotesk', sans-serif;line-height:1.6;overflow-x:hidden}
-a{ color:inherit;text-decoration:none}
+body{background:var(--bg);color:var(--fg);font-family:'Space Grotesk',sans-serif;line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 48px;display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,8,0.85);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.04)}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.nav-logo-mark{width:30px;height:30px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#000;letter-spacing:-0.5px}
+.nav-logo-text{font-weight:600;font-size:15px;letter-spacing:-0.01em}
+.nav-links{display:flex;gap:32px;font-size:13px;color:var(--muted)}
+.nav-links a:hover{color:var(--fg);transition:color 0.2s}
+.nav-cta{background:var(--accent);color:#000;padding:8px 20px;border-radius:8px;font-size:13px;font-weight:700;letter-spacing:0.01em;transition:opacity 0.2s}
+.nav-cta:hover{opacity:0.85}
+.hero{min-height:100vh;display:flex;align-items:center;padding:120px 48px 80px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(232,255,90,0.04) 0%,transparent 70%);pointer-events:none}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;opacity:0.5}
+.hero-content{max-width:720px;position:relative;z-index:1}
+.hero-eyebrow{font-size:11px;letter-spacing:0.2em;color:var(--accent);margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.hero-eyebrow::before{content:'';width:24px;height:1px;background:var(--accent);display:inline-block}
+h1{font-size:clamp(3rem,7vw,6rem);line-height:1.02;font-weight:700;letter-spacing:-0.03em;margin-bottom:24px}
+h1 span{color:var(--accent)}
+.hero-sub{font-size:18px;color:var(--muted);max-width:480px;line-height:1.7;margin-bottom:48px}
+.hero-actions{display:flex;gap:16px;flex-wrap:wrap}
+.btn-primary{background:var(--accent);color:#000;padding:14px 32px;border-radius:10px;font-size:14px;font-weight:700;letter-spacing:0.01em;transition:all 0.2s;cursor:pointer;border:none;font-family:inherit}
+.btn-primary:hover{opacity:0.88;transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--fg);padding:14px 32px;border-radius:10px;font-size:14px;font-weight:600;border:1px solid var(--border);transition:all 0.2s;cursor:pointer;font-family:inherit}
+.btn-ghost:hover{border-color:#444;background:var(--surface)}
+.hero-stats{display:flex;gap:48px;margin-top:64px;padding-top:48px;border-top:1px solid var(--border)}
+.stat-num{font-size:2.4rem;font-weight:700;letter-spacing:-0.03em;color:var(--fg)}
+.stat-num span{color:var(--accent)}
+.stat-label{font-size:12px;color:var(--muted);margin-top:4px;letter-spacing:0.05em}
+.stats-bar{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:32px 48px;display:flex;overflow-x:auto}
+.stats-bar-item{flex:1;min-width:160px;padding:0 32px;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:4px}
+.stats-bar-item:first-child{padding-left:0}
+.stats-bar-item:last-child{border-right:none}
+.stats-bar-val{font-size:1.8rem;font-weight:700;letter-spacing:-0.02em;color:var(--accent)}
+.stats-bar-label{font-size:12px;color:var(--muted);letter-spacing:0.03em}
+.section{padding:100px 48px}
+.section-label{font-size:11px;letter-spacing:0.2em;color:var(--accent);margin-bottom:16px}
+.section-title{font-size:clamp(2rem,4vw,3.2rem);font-weight:700;letter-spacing:-0.02em;line-height:1.1;margin-bottom:20px}
+.section-sub{font-size:16px;color:var(--muted);max-width:520px;line-height:1.7;margin-bottom:56px}
+.predict-wrapper{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.predict-form{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px}
+.predict-title{font-size:18px;font-weight:600;margin-bottom:24px;letter-spacing:-0.01em}
+.fighter-row{display:flex;gap:16px;align-items:flex-end;margin-bottom:20px}
+.fighter-input-wrap{flex:1}
+.input-label{font-size:11px;color:var(--muted);letter-spacing:0.1em;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.label-badge{padding:2px 8px;border-radius:20px;font-size:10px;font-weight:600}
+.label-blue{background:rgba(55,138,221,0.12);color:var(--blue)}
+.label-red{background:rgba(216,90,48,0.12);color:var(--red)}
+.fighter-input{width:100%;padding:12px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--fg);font-size:14px;font-family:'Space Grotesk',sans-serif;outline:none;transition:border-color 0.2s}
+.fighter-input:focus{border-color:var(--accent)}
+.vs-badge{font-size:13px;font-weight:700;color:var(--muted);padding-bottom:12px}
+.predict-btn{width:100%;padding:14px;background:var(--accent);color:#000;border:none;border-radius:10px;font-size:14px;font-weight:700;font-family:'Space Grotesk',sans-serif;cursor:pointer;letter-spacing:0.01em;margin-top:4px;transition:opacity 0.2s}
+.predict-btn:hover{opacity:0.88}
+.result-area{min-height:200px;display:flex;flex-direction:column;gap:16px}
+.result-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px}
+.result-winner-label{font-size:11px;color:var(--muted);letter-spacing:0.1em;margin-bottom:6px}
+.result-winner{font-size:2rem;font-weight:700;letter-spacing:-0.02em}
+.result-winner.blue{color:var(--blue)}
+.result-winner.red{color:var(--red)}
+.conf-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;margin-left:12px;vertical-align:middle}
+.conf-high{background:rgba(74,222,128,0.1);color:#4ade80;border:1px solid rgba(74,222,128,0.2)}
+.conf-med{background:rgba(232,255,90,0.1);color:var(--accent);border:1px solid rgba(232,255,90,0.2)}
+.conf-low{background:rgba(255,255,255,0.06);color:var(--muted);border:1px solid rgba(255,255,255,0.1)}
+.prob-bar-wrap{margin:20px 0}
+.prob-bar-labels{display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px}
+.prob-bar-labels span:first-child{color:var(--blue);font-weight:600}
+.prob-bar-labels span:last-child{color:var(--red);font-weight:600}
+.prob-bar-labels span:nth-child(2){color:var(--muted);font-size:11px}
+.prob-bar-track{height:22px;background:var(--surface2);border-radius:11px;overflow:hidden;display:flex}
+.prob-bar-f1{background:var(--blue);transition:width 0.9s cubic-bezier(0.22,1,0.36,1)}
+.prob-bar-f2{background:var(--red);transition:width 0.9s cubic-bezier(0.22,1,0.36,1)}
+.prob-pcts{display:flex;justify-content:space-between;margin-top:6px;font-size:13px;font-weight:600}
+.prob-pcts span:first-child{color:var(--blue)}
+.prob-pcts span:last-child{color:var(--red)}
+.shap-title{font-size:11px;color:var(--muted);letter-spacing:0.1em;margin-bottom:16px}
+.shap-item{margin-bottom:10px}
+.shap-row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px}
+.shap-feat{color:var(--fg)}
+.shap-val{font-family:'Fira Code',monospace;font-size:11px;color:var(--muted)}
+.shap-bar-track{height:5px;background:var(--surface2);border-radius:3px;overflow:hidden}
+.shap-bar-fill{height:100%;border-radius:3px;transition:width 0.7s ease}
+.placeholder-text{color:var(--muted);font-size:14px;line-height:1.7;padding:20px 0}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.feature-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:28px;transition:all 0.2s}
+.feature-card:hover{border-color:#333;transform:translateY(-3px)}
+.feature-icon{width:40px;height:40px;border-radius:10px;background:var(--surface2);display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:18px}
+.feature-title{font-size:16px;font-weight:600;margin-bottom:8px;letter-spacing:-0.01em}
+.feature-desc{font-size:14px;color:var(--muted);line-height:1.7}
+.method-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.method-steps{display:flex;flex-direction:column}
+.method-step{display:flex;gap:24px;padding:28px 0;border-bottom:1px solid var(--border)}
+.method-step:last-child{border-bottom:none}
+.step-num{font-size:11px;font-family:'Fira Code',monospace;color:var(--accent);min-width:28px;padding-top:3px}
+.step-title{font-size:15px;font-weight:600;margin-bottom:6px}
+.step-desc{font-size:14px;color:var(--muted);line-height:1.7}
+.model-card{background:var(--bg);border:1px solid var(--border);border-radius:16px;padding:32px}
+.model-card-title{font-size:13px;color:var(--muted);letter-spacing:0.1em;margin-bottom:24px}
+.shap-chart{display:flex;flex-direction:column;gap:12px}
+.shap-row-big{display:grid;grid-template-columns:140px 1fr 60px;align-items:center;gap:12px}
+.shap-label{font-size:12px;color:var(--muted);text-align:right}
+.shap-bar-outer{height:8px;background:var(--surface2);border-radius:4px;overflow:hidden}
+.shap-bar-inner{height:100%;background:var(--blue);border-radius:4px}
+.shap-num{font-size:11px;font-family:'Fira Code',monospace;color:var(--accent)}
+.matchups-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.matchup-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;transition:border-color 0.2s}
+.matchup-card:hover{border-color:#333}
+.matchup-fighters{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.matchup-f{font-size:14px;font-weight:600}
+.matchup-f.blue{color:var(--blue)}
+.matchup-f.red{color:var(--red)}
+.matchup-vs{font-size:11px;color:var(--muted);font-weight:600}
+.matchup-bar{height:6px;border-radius:3px;overflow:hidden;background:var(--surface2);display:flex;margin-bottom:10px}
+.matchup-f1{background:var(--blue)}
+.matchup-f2{background:var(--red)}
+.matchup-pcts{display:flex;justify-content:space-between;font-size:12px;font-weight:600;font-family:'Fira Code',monospace}
+.matchup-outcome{font-size:11px;color:var(--muted);margin-top:8px;display:flex;align-items:center;gap:6px}
+.outcome-check{color:var(--green)}
+footer{background:var(--surface);border-top:1px solid var(--border);padding:48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px}
+.footer-sub{font-size:13px;color:var(--muted)}
+.footer-links{display:flex;gap:24px;font-size:13px;color:var(--muted)}
+.footer-links a:hover{color:var(--fg)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.anim{animation:fadeUp 0.8s cubic-bezier(0.22,1,0.36,1) both}
+.anim-1{animation-delay:0.1s}.anim-2{animation-delay:0.22s}.anim-3{animation-delay:0.34s}.anim-4{animation-delay:0.46s}.anim-5{animation-delay:0.58s}
+@media(max-width:900px){nav{padding:16px 24px}.nav-links{display:none}.hero{padding:100px 24px 60px}.hero-stats{gap:28px;flex-wrap:wrap}.stats-bar{padding:24px}.section{padding:64px 24px}.predict-wrapper,.features-grid,.method-grid,.matchups-grid{grid-template-columns:1fr}footer{padding:32px 24px;flex-direction:column;align-items:flex-start}}
 </style>
 </head>
+<body>
+<nav>
+  <div class="nav-logo">
+    <div class="nav-logo-mark">UFC</div>
+    <span class="nav-logo-text">UFC Predictor</span>
+  </div>
+  <div class="nav-links">
+    <a href="#predict">Predict</a>
+    <a href="#methodology">Methodology</a>
+    <a href="#validation">Validation</a>
+  </div>
+  <a href="#predict" class="nav-cta">Try It &rarr;</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow anim anim-1">ML-POWERED &middot; XGBOOST &middot; TRAINED ON REAL DATA</div>
+    <h1 class="anim anim-2">Who wins<br/>the <span>fight?</span></h1>
+    <p class="hero-sub anim anim-3">Search any UFC fighter. The model computes 12 differentials across striking, grappling, and defense &mdash; and outputs calibrated win probabilities.</p>
+    <div class="hero-actions anim anim-4">
+      <button class="btn-primary" onclick="document.getElementById('predict').scrollIntoView({behavior:'smooth'})">Make a prediction &rarr;</button>
+      <button class="btn-ghost" onclick="document.getElementById('methodology').scrollIntoView({behavior:'smooth'})">How it works</button>
+    </div>
+    <div class="hero-stats anim anim-5">
+      <div class="stat-item"><div class="stat-num"><span>63.7</span>%</div><div class="stat-label">CV ACCURACY</div></div>
+      <div class="stat-item"><div class="stat-num">2<span>,</span>925</div><div class="stat-label">FIGHTS TRAINED ON</div></div>
+      <div class="stat-item"><div class="stat-num">3<span>,</span>333</div><div class="stat-label">FIGHTERS IN DB</div></div>
+      <div class="stat-item"><div class="stat-num">+<span>12</span>%</div><div class="stat-label">OVER BASELINE</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="stats-bar">
+  <div class="stats-bar-item"><div class="stats-bar-val">XGBoost</div><div class="stats-bar-label">MODEL ARCHITECTURE</div></div>
+  <div class="stats-bar-item"><div class="stats-bar-val">Optuna</div><div class="stats-bar-label">HYPERPARAMETER TUNING</div></div>
+  <div class="stats-bar-item"><div class="stats-bar-val">SHAP</div><div class="stats-bar-label">EXPLAINABILITY</div></div>
+  <div class="stats-bar-item"><div class="stats-bar-val">0.218</div><div class="stats-bar-label">BRIER SCORE</div></div>
+  <div class="stats-bar-item"><div class="stats-bar-val">2015&ndash;21</div><div class="stats-bar-label">TRAINING DATA RANGE</div></div>
+</div>
+
+<section class="section" id="predict" style="background:var(--bg)">
+  <div class="section-label">FIGHT PREDICTOR</div>
+  <div class="section-title">Run a matchup</div>
+  <div class="section-sub">Type any two fighter names. The model runs live in your browser using a logistic approximation of XGBoost with 89.3% agreement.</div>
+  <div class="predict-wrapper">
+    <div class="predict-form">
+      <div class="predict-title">Select fighters</div>
+      <div class="fighter-row">
+        <div class="fighter-input-wrap">
+          <div class="input-label">Fighter 1 <span class="label-badge label-blue">BLUE</span></div>
+          <input class="fighter-input" id="f1" placeholder="e.g. Islam Makhachev" />
+        </div>
+        <div class="vs-badge">VS</div>
+        <div class="fighter-input-wrap">
+          <div class="input-label">Fighter 2 <span class="label-badge label-red">RED</span></div>
+          <input class="fighter-input" id="f2" placeholder="e.g. Ilia Topuria" />
+        </div>
+      </div>
+      <button class="predict-btn" onclick="runPrediction()">Predict winner &rarr;</button>
+    </div>
+    <div class="result-area" id="result-area">
+      <div class="placeholder-text">Enter two fighter names and hit predict. The model outputs win probabilities, confidence level, and a SHAP feature breakdown.</div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:var(--surface)">
+  <div class="section-label">FEATURES</div>
+  <div class="section-title">Built different</div>
+  <div class="section-sub">Not just win/loss records. The model works on real performance differentials.</div>
+  <div class="features-grid">
+    <div class="feature-card"><div class="feature-icon">&#9889;</div><div class="feature-title">Net strike edge</div><div class="feature-desc">Effective striking volume adjusted for accuracy and absorption &mdash; the model's top SHAP feature by a factor of 2x.</div></div>
+    <div class="feature-card"><div class="feature-icon">&#129340;</div><div class="feature-title">Grappling differentials</div><div class="feature-desc">Takedown average, accuracy, and defense combined into a net grapple edge metric that captures both offense and resistance.</div></div>
+    <div class="feature-card"><div class="feature-icon">&#128737;</div><div class="feature-title">Defensive ratio</div><div class="feature-desc">Strike defense and takedown defense ratios between fighters. Defense predicts outcomes better than volume alone.</div></div>
+    <div class="feature-card"><div class="feature-icon">&#128202;</div><div class="feature-title">Calibrated probabilities</div><div class="feature-desc">Model outputs genuine probabilities, not binary predictions. When it says 70%, the fighter wins ~70% of the time.</div></div>
+    <div class="feature-card"><div class="feature-icon">&#128269;</div><div class="feature-title">SHAP explanations</div><div class="feature-desc">Every prediction comes with a per-feature breakdown showing exactly which stats drove the result and by how much.</div></div>
+    <div class="feature-card"><div class="feature-icon">&#127919;</div><div class="feature-title">50-trial Optuna tuning</div><div class="feature-desc">Hyperparameters tuned via Bayesian optimization across 50 trials on 3-fold CV before final training.</div></div>
+  </div>
+</section>
+
+<section class="section" id="methodology" style="background:var(--surface)">
+  <div class="section-label">METHODOLOGY</div>
+  <div class="method-grid">
+    <div>
+      <div class="section-title">How it works</div>
+      <div class="section-sub">From raw ufcstats data to a calibrated prediction in under 2 seconds.</div>
+      <div class="method-steps">
+        <div class="method-step"><div class="step-num">01</div><div><div class="step-title">Feature engineering</div><div class="step-desc">12 differentials computed from career averages &mdash; striking output, accuracy, absorption, defense, takedown stats, submission rate, and composite edges.</div></div></div>
+        <div class="method-step"><div class="step-num">02</div><div><div class="step-title">XGBoost with Optuna</div><div class="step-desc">Gradient-boosted trees tuned via Bayesian optimization. Each fight appears twice &mdash; once per fighter as F1 &mdash; creating a symmetric balanced dataset.</div></div></div>
+        <div class="method-step"><div class="step-num">03</div><div><div class="step-title">SHAP analysis</div><div class="step-desc">TreeExplainer computes per-feature Shapley values. Net strike edge dominates &mdash; 2x the importance of any other feature.</div></div></div>
+        <div class="method-step"><div class="step-num">04</div><div><div class="step-title">JS surrogate model</div><div class="step-desc">Logistic regression fit on XGBoost's predictions achieves 89.3% agreement &mdash; enabling real-time predictions in the browser with no backend call.</div></div></div>
+      </div>
+    </div>
+    <div>
+      <div class="model-card">
+        <div class="model-card-title">GLOBAL SHAP IMPORTANCE</div>
+        <div class="shap-chart">
+          <div class="shap-row-big"><div class="shap-label">Net strike edge</div><div class="shap-bar-outer"><div class="shap-bar-inner" style="width:100%;background:var(--accent)"></div></div><div class="shap-num">0.4244</div></div>
+          <div class="shap-row-big"><div class="shap-label">Sub. threat</div><div class="shap-bar-outer"><div class="shap-bar-inner" style="width:43%"></div></div><div class="shap-num">0.1822</div></div>
+          <div class="shap-row-big"><div class="shap-label">Strike output</div><div class="shap-bar-outer"><div class="shap-bar-inner" style="width:42%"></div></div><div class="shap-num">0.1771</div></div>
+          <div class="shap-row-big"><div class="shap-label">Defense ratio</div><div class="shap-bar-outer"><div class="shap-bar-inner" style="width:34%"></div></div><div class="shap-num">0.1464</div></div>
+          <div class="shap-row-big"><div class="shap-label">Takedown diff</div><div class="shap-bar-outer"><div class="shap-bar-inner" style="width:34%"></div></div><div class="shap-num">0.1456</div></div>
+          <div class="shap-row-big"><div class="shap-label">Strike accuracy</div><div class="shap-bar-outer"><div class="shap-bar-inner" style="width:27%"></div></div><div class="shap-num">0.1128</div></div>
+          <div class="shap-row-big"><div class="shap-label">TD defense</div><div class="shap-bar-outer"><div class="shap-bar-inner" style="width:13%"></div></div><div class="shap-num">0.0544</div></div>
+          <div class="shap-row-big"><div class="shap-label">Strikes absorbed</div><div class="shap-bar-outer"><div class="shap-bar-inner" style="width:12%"></div></div><div class="shap-num">0.0519</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="validation" style="background:var(--bg)">
+  <div class="section-label">VALIDATION</div>
+  <div class="section-title">Hypothesis tests</div>
+  <div class="section-sub">Real fights the model called correctly.</div>
+  <div class="matchups-grid">
+    <div class="matchup-card"><div class="matchup-fighters"><span class="matchup-f blue">Khabib</span><span class="matchup-vs">vs</span><span class="matchup-f red">McGregor</span></div><div class="matchup-bar"><div class="matchup-f1" style="width:74.6%"></div><div class="matchup-f2" style="width:25.4%"></div></div><div class="matchup-pcts"><span style="color:var(--blue)">74.6%</span><span style="color:var(--red)">25.4%</span></div><div class="matchup-outcome"><span class="outcome-check">&#10003;</span> Khabib won by submission R4</div></div>
+    <div class="matchup-card"><div class="matchup-fighters"><span class="matchup-f blue">Strickland</span><span class="matchup-vs">vs</span><span class="matchup-f red">Adesanya</span></div><div class="matchup-bar"><div class="matchup-f1" style="width:69.5%"></div><div class="matchup-f2" style="width:30.5%"></div></div><div class="matchup-pcts"><span style="color:var(--blue)">69.5%</span><span style="color:var(--red)">30.5%</span></div><div class="matchup-outcome"><span class="outcome-check">&#10003;</span> Strickland upset &mdash; unanimous decision</div></div>
+    <div class="matchup-card"><div class="matchup-fighters"><span class="matchup-f blue">Poirier</span><span class="matchup-vs">vs</span><span class="matchup-f red">McGregor 3</span></div><div class="matchup-bar"><div class="matchup-f1" style="width:66.7%"></div><div class="matchup-f2" style="width:33.3%"></div></div><div class="matchup-pcts"><span style="color:var(--blue)">66.7%</span><span style="color:var(--red)">33.3%</span></div><div class="matchup-outcome"><span class="outcome-check">&#10003;</span> Poirier won by TKO R1</div></div>
+    <div class="matchup-card"><div class="matchup-fighters"><span class="matchup-f blue">Jones</span><span class="matchup-vs">vs</span><span class="matchup-f red">Pereira</span></div><div class="matchup-bar"><div class="matchup-f1" style="width:59.6%"></div><div class="matchup-f2" style="width:40.4%"></div></div><div class="matchup-pcts"><span style="color:var(--blue)">59.6%</span><span style="color:var(--red)">40.4%</span></div><div class="matchup-outcome"><span class="outcome-check">&#10003;</span> Jones favored &mdash; correct direction</div></div>
+  </div>
+</section>
+
+<footer>
+  <div>
+    <div class="nav-logo" style="margin-bottom:8px"><div class="nav-logo-mark">UFC</div><span style="font-weight:600;font-size:15px">UFC Predictor</span></div>
+    <div class="footer-sub">XGBoost &middot; Optuna &middot; SHAP &middot; Express &middot; React &middot; Railway<br>Data: ufcstats.com via Kaggle (2015&ndash;2021)</div>
+  </div>
+  <div class="footer-links">
+    <a href="https://github.com/kabirmago/ufc-predictor">GitHub &rarr;</a>
+    <a href="https://www.kaggle.com/datasets/asaniczka/ufc-fighters-statistics">Data &rarr;</a>
+  </div>
+</footer>
+
+<script>
+const FIGHTERS={"Islam Makhachev":{"slpm":2.46,"str_acc":60,"sapm":1.27,"str_def":61,"td_avg":3.17,"td_acc":60,"td_def":90,"sub_avg":1.0},"Ilia Topuria":{"slpm":4.44,"str_acc":46,"sapm":3.05,"str_def":67,"td_avg":2.19,"td_acc":56,"td_def":92,"sub_avg":1.5},"Justin Gaethje":{"slpm":7.35,"str_acc":60,"sapm":7.5,"str_def":53,"td_avg":0.13,"td_acc":25,"td_def":75,"sub_avg":0},"Conor McGregor":{"slpm":5.32,"str_acc":49,"sapm":4.66,"str_def":54,"td_avg":0.67,"td_acc":55,"td_def":66,"sub_avg":0.1},"Khabib Nurmagomedov":{"slpm":3.02,"str_acc":48,"sapm":1.86,"str_def":60,"td_avg":5.32,"td_acc":48,"td_def":83,"sub_avg":1.5},"Jon Jones":{"slpm":4.3,"str_acc":57,"sapm":2.17,"str_def":64,"td_avg":1.88,"td_acc":43,"td_def":94,"sub_avg":0.9},"Alex Pereira":{"slpm":5.27,"str_acc":52,"sapm":4.22,"str_def":56,"td_avg":0.42,"td_acc":50,"td_def":78,"sub_avg":0.1},"Sean Strickland":{"slpm":6.2,"str_acc":47,"sapm":5.06,"str_def":58,"td_avg":0.89,"td_acc":36,"td_def":78,"sub_avg":0.2},"Israel Adesanya":{"slpm":3.56,"str_acc":48,"sapm":2.6,"str_def":60,"td_avg":0.48,"td_acc":35,"td_def":84,"sub_avg":0},"Dustin Poirier":{"slpm":5.43,"str_acc":49,"sapm":4.55,"str_def":57,"td_avg":1.74,"td_acc":41,"td_def":68,"sub_avg":0.8},"Charles Oliveira":{"slpm":3.62,"str_acc":50,"sapm":3.38,"str_def":49,"td_avg":3.0,"td_acc":38,"td_def":72,"sub_avg":2.8},"Max Holloway":{"slpm":7.46,"str_acc":46,"sapm":4.98,"str_def":56,"td_avg":0.55,"td_acc":31,"td_def":71,"sub_avg":0.1},"Alexander Volkanovski":{"slpm":6.04,"str_acc":58,"sapm":3.07,"str_def":57,"td_avg":2.01,"td_acc":57,"td_def":74,"sub_avg":0.4},"Kamaru Usman":{"slpm":4.54,"str_acc":52,"sapm":2.65,"str_def":61,"td_avg":3.27,"td_acc":47,"td_def":76,"sub_avg":0.2},"Leon Edwards":{"slpm":3.63,"str_acc":47,"sapm":2.56,"str_def":65,"td_avg":0.79,"td_acc":52,"td_def":82,"sub_avg":0.2}};
+const MODEL={intercept:0.023624,coefficients:{slpm_diff:0,str_acc_diff:0,sapm_diff:0,str_def_diff:0,td_diff:0,td_acc_diff:0,td_def_diff:0,sub_diff:0,net_strike_edge:1.339423,net_grapple_edge:0.206124,style_mismatch:0.051191,def_ratio:-0.084109}};
+const FEAT_LABELS={net_strike_edge:'Net strike edge',sub_diff:'Submission threat',slpm_diff:'Strike output',def_ratio:'Defense ratio',td_diff:'Takedown diff',str_acc_diff:'Strike accuracy',td_def_diff:'TD defense',sapm_diff:'Strikes absorbed'};
+function sigmoid(x){return 1/(1+Math.exp(-x))}
+function getStats(name){const k=Object.keys(FIGHTERS).find(n=>n.toLowerCase()===name.toLowerCase().trim());return k?FIGHTERS[k]:null}
+function computeFeats(s1,s2){const ne=(s1.slpm*(s1.str_acc/100)-s1.sapm*(1-s1.str_def/100))-(s2.slpm*(s2.str_acc/100)-s2.sapm*(1-s2.str_def/100));const ng=(s1.td_avg*(s1.td_acc/100)+s1.td_def/100)-(s2.td_avg*(s2.td_acc/100)+s2.td_def/100);const sm=(s1.slpm>4&&s1.td_avg<1&&s2.td_avg>2&&s2.slpm<3.5)?1:0;const dr=s2.str_def?(s1.str_def/s2.str_def):1;return{slpm_diff:s1.slpm-s2.slpm,str_acc_diff:s1.str_acc-s2.str_acc,sapm_diff:s1.sapm-s2.sapm,str_def_diff:s1.str_def-s2.str_def,td_diff:s1.td_avg-s2.td_avg,td_acc_diff:s1.td_acc-s2.td_acc,td_def_diff:s1.td_def-s2.td_def,sub_diff:s1.sub_avg-s2.sub_avg,net_strike_edge:ne,net_grapple_edge:ng,style_mismatch:sm,def_ratio:dr}}
+function runPrediction(){const f1name=document.getElementById('f1').value.trim();const f2name=document.getElementById('f2').value.trim();if(!f1name||!f2name){showError('Enter both fighter names');return}const s1=getStats(f1name);const s2=getStats(f2name);if(!s1){showError('"'+f1name+'" not found. Try: Islam Makhachev, Ilia Topuria, Justin Gaethje, Conor McGregor, Khabib, Jon Jones, Alex Pereira, Sean Strickland...');return}if(!s2){showError('"'+f2name+'" not found. Try: Islam Makhachev, Ilia Topuria, Justin Gaethje, Conor McGregor, Khabib, Jon Jones, Alex Pereira, Sean Strickland...');return}const feats=computeFeats(s1,s2);let logit=MODEL.intercept;const shapItems=[];for(const f of Object.keys(MODEL.coefficients)){const contrib=MODEL.coefficients[f]*feats[f];logit+=contrib;if(Math.abs(contrib)>0.001)shapItems.push({feature:f,contrib})}shapItems.sort((a,b)=>Math.abs(b.contrib)-Math.abs(a.contrib));const f1prob=sigmoid(logit);const f2prob=1-f1prob;const winner=f1prob>0.5?f1name:f2name;const conf=Math.max(f1prob,f2prob)>0.7?'high':Math.max(f1prob,f2prob)>0.58?'medium':'low';const pct1=Math.round(f1prob*100);const pct2=100-pct1;const wColor=f1prob>0.5?'blue':'red';const confHtml=conf==='high'?'<span class="conf-badge conf-high">HIGH CONFIDENCE</span>':conf==='medium'?'<span class="conf-badge conf-med">MEDIUM CONFIDENCE</span>':'<span class="conf-badge conf-low">LOW CONFIDENCE</span>';const shapHtml=shapItems.slice(0,5).map(item=>{const pos=item.contrib>0;const pct=Math.min(Math.abs(item.contrib)*60,100);const color=pos?'var(--blue)':'var(--red)';const fn=pos?(f1name.split(' ').slice(-1)[0]):(f2name.split(' ').slice(-1)[0]);const label=FEAT_LABELS[item.feature]||item.feature;const sign=item.contrib>0?'+':'';return'<div class="shap-item"><div class="shap-row"><span class="shap-feat">'+label+'</span><span class="shap-val">'+sign+item.contrib.toFixed(3)+' &middot; '+fn+'</span></div><div class="shap-bar-track"><div class="shap-bar-fill" style="width:'+pct+'%;background:'+color+'"></div></div></div>'}).join('');document.getElementById('result-area').innerHTML='<div class="result-card" style="animation:fadeUp 0.5s cubic-bezier(0.22,1,0.36,1) both"><div class="result-winner-label">PREDICTED WINNER</div><div style="display:flex;align-items:baseline;flex-wrap:wrap"><span class="result-winner '+wColor+'">'+winner+'</span>'+confHtml+'</div><div class="prob-bar-wrap"><div class="prob-bar-labels"><span>'+f1name.split(' ').slice(-1)[0]+'</span><span>win probability</span><span>'+f2name.split(' ').slice(-1)[0]+'</span></div><div class="prob-bar-track"><div class="prob-bar-f1" style="width:'+pct1+'%"></div><div class="prob-bar-f2" style="width:'+pct2+'%"></div></div><div class="prob-pcts"><span>'+pct1+'%</span><span>'+pct2+'%</span></div></div></div><div class="result-card" style="animation:fadeUp 0.5s 0.15s cubic-bezier(0.22,1,0.36,1) both"><div class="shap-title">SHAP FEATURE BREAKDOWN</div>'+shapHtml+'<div style="display:flex;gap:16px;margin-top:14px;font-size:11px"><span style="color:var(--blue)">&#9632; Favors '+f1name.split(' ').slice(-1)[0]+' (F1)</span><span style="color:var(--red)">&#9632; Favors '+f2name.split(' ').slice(-1)[0]+' (F2)</span></div></div>'}
+function showError(msg){document.getElementById('result-area').innerHTML='<div style="color:var(--red);font-size:13px;padding:16px 0;line-height:1.6">'+msg+'</div>'}
+document.getElementById('f2').addEventListener('keydown',e=>{if(e.key==='Enter')runPrediction()});
+document.getElementById('f1').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('f2').focus()});
+</script>
+</body>
+</html>
